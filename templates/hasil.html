@@ -1,0 +1,130 @@
+{% extends 'headerfooter/header.html' %} {% block nama %} SDGs DDP {% endblock
+%} {% block judulkonten %}
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">
+          SDGs: <a style="color: red">{{ nama_desa }}</a>
+        </h1>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">SDGs</li>
+        </ol>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</div>
+{% endblock %} {% block content %}
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-10 col-10">
+        <div class="d-flex justify-content-center">
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Goals / Hamlet</th>
+                {% for i in range(1, Jumlah_RW+2) %}
+                <th
+                  scope="col"
+                  style="vertical-align: middle; text-align: center"
+                >
+                {% if(i>Jumlah_RW) %}
+                  {{ "Average" }}
+                {% else %}
+                 {{ i }}
+                 {% endif %}
+                </th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for key,value in mentah.iterrows() %}
+              <tr>
+                <td>
+                  <img
+                    src="{{ url_for('static', filename='sdgs/' ~key ~'.png')}}"
+                    width="65px"
+                  />
+                </td>
+                <td style="vertical-align: middle">{{ keterangan[key] }}</td>
+                {% for i in range(0, Jumlah_RW+1) %} {% if(value[i]>8.96) %}
+                <td
+                  style="
+                    background-color: #03943a;
+                    vertical-align: middle;
+                    text-align: center;
+                    color: white;
+                  "
+                >
+                  {{ "%.2f"|format(value[i]) }}
+                </td>
+                {% elif(value[i]>7.26) %}
+                <td
+                  style="
+                    background-color: #89e2ab;
+                    vertical-align: middle;
+                    text-align: center;
+                    color: white;
+                  "
+                >
+                  {{ "%.2f"|format(value[i]) }}
+                </td>
+                {% elif(value[i]>5.37) %}
+                <td
+                  style="
+                    background-color: #fce305;
+                    vertical-align: middle;
+                    text-align: center;
+                    color: white;
+                  "
+                >
+                  {{ "%.2f"|format(value[i]) }}
+                </td>
+                {% elif(value[i]>2.56) %}
+                <td
+                  style="
+                    background-color: #e9b554;
+                    vertical-align: middle;
+                    text-align: center;
+                    color: white;
+                  "
+                >
+                  {{ "%.2f"|format(value[i]) }}
+                </td>
+                {% elif(value[i]>=0) %}
+                <td
+                  style="
+                    background-color: #e40b0b;
+                    vertical-align: middle;
+                    text-align: center;
+                    color: white;
+                  "
+                >
+                  <a href="detail/{{i}}/{{key}}"
+                    >{{ "%.2f"|format(value[i]) }}</a
+                  >
+                </td>
+                {% else %}
+                <td class="table-active">{{ "" }}</td>
+                {% endif %} {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
